@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "vod-app",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}
