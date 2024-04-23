@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import * as firebase from 'firebase/app';
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 @Injectable({
   providedIn: 'root'
@@ -41,4 +43,15 @@ export class AuthService {
   get isAuthenticated(): boolean {
     return this.afAuth.currentUser !== null;
   }
-}
+
+  async signInWithGoogle() {
+    try {
+      const auth = getAuth();
+      const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      console.log('signInWithGoogle: success', result);
+    } catch (error) {
+      console.error('signInWithGoogle: failure', error);
+    }
+  }
+  }
+

@@ -1,18 +1,39 @@
-<form >
-    <div class="mb-3">
-      <label for="email" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" [(ngModel)]="credentials.email">
-      <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
-    </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password" name="password" [(ngModel)]="credentials.password">
-    </div>
-    <!-- <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div> -->
-    <button type="submit" class="btn btn-primary" (click)="login()">Register</button>
-</form>
-
-<div></div>
+<app-navbar></app-navbar>
+<div class="login-page">
+  <div id="login-form" [hidden]="showLoginForm">
+    <form >
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" [(ngModel)]="credentials.email">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" [(ngModel)]="credentials.password">
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="login()">Login</button>
+      <button (click)="googleLogin()" class="btn btn-primary">Log in with Google</button>
+    </form>
+  </div>
+  
+  <div id="register-form" [hidden]="!showLoginForm">
+    <form >
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" [(ngModel)]="credentials.email">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" [(ngModel)]="credentials.password">
+      </div>
+      <button type="submit" class="btn btn-primary" (click)="signup()">Sign up</button>
+    </form>
+  </div>
+  
+  <div [hidden]="showLoginForm" id="new-here" class="additional-info">
+    <p>New here? <a (click)="changeForm()" class="change-form-click">Sign up!</a></p>
+  </div>
+  
+  <div [hidden]="!showLoginForm" id="already-have-an-account" class="additional-info">
+    <p>Already have an account? <a (click)="changeForm()" class="change-form-click">Log in!</a></p>
+  </div>
+</div>

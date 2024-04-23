@@ -11,13 +11,21 @@ import { environment } from '../environments/environment';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { Firestore, getFirestore } from 'firebase/firestore';
+import { FirestoreModule } from '@angular/fire/firestore';
+import { SingleMovieComponent } from './components/single-movie/single-movie.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
+    NavbarComponent,
+    SingleMovieComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -26,9 +34,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AngularFireAuthModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFirestoreModule
   ],
   providers: [
+    FirestoreModule,
     AuthService
   ],
   bootstrap: [AppComponent]
