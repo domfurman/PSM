@@ -17,6 +17,9 @@ import { Firestore, getFirestore } from 'firebase/firestore';
 import { FirestoreModule } from '@angular/fire/firestore';
 import { SingleMovieComponent } from './components/single-movie/single-movie.component';
 import { SearchComponent } from './components/search/search.component';
+import { BackButtonComponent } from './components/back-button/back-button.component';
+import { LibraryComponent } from './components/library/library.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import { SearchComponent } from './components/search/search.component';
     HomeComponent,
     NavbarComponent,
     SingleMovieComponent,
-    SearchComponent
+    SearchComponent,
+    BackButtonComponent,
+    LibraryComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
