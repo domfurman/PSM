@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../../services/movie.service';
 import { Movie } from '../../models/movie';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MoviePaymentDetails } from '../../models/movie-payment-details';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-payment-gate',
@@ -13,7 +15,7 @@ export class PaymentGateComponent implements OnInit{
 
   moviePaymentDetails: any = new MoviePaymentDetails();
 
-  constructor(private movieService: MovieService, private route: ActivatedRoute) {}
+  constructor(private movieService: MovieService, private route: ActivatedRoute, private router: Router) {}
   ngOnInit(): void {
     this.getMovieParams();
   }
@@ -32,4 +34,20 @@ export class PaymentGateComponent implements OnInit{
     
   }
 
+  pay() {
+    Swal.fire({
+      title: 'Payment succesfull',
+      text: "Movie will appear in your library",
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then((result) => {
+      if (result.isConfirmed) {
+          this.redirectToLibrary()
+      }
+    });
+  }
+
+  redirectToLibrary() {
+    this.router.navigate(['/library']);
+  }
 }

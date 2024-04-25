@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Credentials } from '../../interfaces/credentials';
+import { SignUpCredentials } from '../../interfaces/sign-up-credentials';
 
 
 @Component({
@@ -15,6 +16,14 @@ export class LoginComponent {
     password: ''
   };
 
+  signUpCredentials: SignUpCredentials = {
+    name: '',
+    surname: '',
+    age: 0,
+    email: '',
+    password: ''
+  }
+
   showLoginForm = false;
 
   constructor(private authService: AuthService) {}
@@ -24,7 +33,7 @@ export class LoginComponent {
   }
 
   signup() {
-    this.authService.signUp(this.credentials.email, this.credentials.password);
+    this.authService.signUp(this.signUpCredentials.email, this.signUpCredentials.password, this.signUpCredentials.name, this.signUpCredentials.surname, this.signUpCredentials.age);
   }
 
   changeForm() {

@@ -13,7 +13,6 @@ import { AuthService } from './services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { Firestore, getFirestore } from 'firebase/firestore';
 import { FirestoreModule } from '@angular/fire/firestore';
 import { SingleMovieComponent } from './components/single-movie/single-movie.component';
 import { SearchComponent } from './components/search/search.component';
@@ -33,7 +32,7 @@ import { PaymentGateComponent } from './components/payment-gate/payment-gate.com
     BackButtonComponent,
     LibraryComponent,
     SettingsComponent,
-    PaymentGateComponent
+    PaymentGateComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,11 +43,9 @@ import { PaymentGateComponent } from './components/payment-gate/payment-gate.com
     FormsModule,
     ReactiveFormsModule,
     AngularFirestoreModule
+    
   ],
-  providers: [
-    FirestoreModule,
-    AuthService
-  ],
-  bootstrap: [AppComponent]
+  providers: [FirestoreModule, AuthService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
