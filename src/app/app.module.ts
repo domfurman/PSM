@@ -20,6 +20,7 @@ import { SearchComponent } from './components/search/search.component';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { LibraryComponent } from './components/library/library.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { PaymentGateComponent } from './components/payment-gate/payment-gate.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     SearchComponent,
     BackButtonComponent,
     LibraryComponent,
-    SettingsComponent
+    SettingsComponent,
+    PaymentGateComponent
   ],
   imports: [
     BrowserModule,

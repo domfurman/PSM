@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../../services/movie.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Movie } from '../../models/movie';
 import { getFirestore } from 'firebase/firestore';
 
@@ -12,8 +12,9 @@ import { getFirestore } from 'firebase/firestore';
 export class SingleMovieComponent implements OnInit{
 
   movie: any = new Movie();
+  boughtFor24h: boolean = false
 
-  constructor(private movieService: MovieService, private route: ActivatedRoute) {}
+  constructor(private movieService: MovieService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.getMovie()
@@ -32,6 +33,9 @@ export class SingleMovieComponent implements OnInit{
       }
       
     })
+  }
 
+  redirectToPaymentGate(identifier: string, m: string, p: number) {
+    this.router.navigate(['/payment-gate', m], {queryParams: {identifier: identifier, price: p, name: m}})
   }
 }

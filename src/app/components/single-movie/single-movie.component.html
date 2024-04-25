@@ -10,8 +10,10 @@
         alt="..."
     />
     <div class="text-light card-body d-flex card-img-overlay position-absolute top-50 start-50 translate-middle-x" id="prices">
-        <p class="card-text p-2 text-black" style="font-size: 1.5rem;"><span style="--bs-bg-opacity: .5; :hover{  }" class="rounded mx-auto p-2 bg-secondary">{{movie['priceFor24h']}}</span></p>
-        <p class="card-text p-2 text-black" style="font-size: 1.5rem;"><span style="--bs-bg-opacity: .5;" class="rounded mx-auto p-2 bg-secondary">{{movie['price']}}</span></p>
+        <!-- <p class="card-text p-2 text-black" style="font-size: 1.5rem;"><span style="--bs-bg-opacity: .5; :hover{  }" class="rounded mx-auto p-2 bg-secondary">{{movie['priceFor24h']}}</span></p>
+        <p class="card-text p-2 text-black" style="font-size: 1.5rem;"><span style="--bs-bg-opacity: .5;" class="rounded mx-auto p-2 bg-secondary">{{movie['price']}}</span></p> -->
+        <button (click)="redirectToPaymentGate('priceFor24h',movie['movieName'], movie['priceFor24h'])"><span class="rounded mx-auto p-2 bg-secondary">{{movie['priceFor24h']}}</span></button>
+        <button (click)="redirectToPaymentGate('price',movie['movieName'], movie['price'])"><span class="rounded mx-auto p-2 bg-secondary">{{movie['price']}}</span></button>
     </div>
     </div>
     
