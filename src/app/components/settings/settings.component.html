@@ -1,40 +1,45 @@
 <app-navbar></app-navbar>
 <app-back-button></app-back-button>
+<div class="d-flex justify-content-center align-items-center">
+  <div class="col-sm-12 col-md-6">
+  <div class="card" style="width: 100%; margin-top:50px; margin-bottom:50px;">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+          <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Notifications</label>
+          </div>
+      </li>
+      <li class="list-group-item">
+          <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Cellular network streaming</label>
+          </div>
+      </li>
+      <li class="list-group-item">
+          <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+          <label class="form-check-label" for="flexSwitchCheckDefault">Parent mode</label>
+          </div>
+      </li>
+      <!-- <li class="list-group-item">
+        <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="vibrationSwitch" (change)="toggleVibration($event.target.checked)">
+          <label class="form-check-label" for="vibrationSwitch">Vibration</label>
+        </div>
+      </li> -->
+    </ul>
+  </div>
+  <div>
+    <button type="button" class="btn btn-outline-danger btn-lg position-absolute start-50 translate-middle" (click)="logoutAlert()">Logout</button>
+  </div>
 
-<div class="card" style="width: 100%; margin-top:50px; margin-bottom:50px;">
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">
-        <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Notifications</label>
-        </div>
-    </li>
-    <li class="list-group-item">
-        <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Cellular network streaming</label>
-        </div>
-    </li>
-    <li class="list-group-item">
-        <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Parent mode</label>
-        </div>
-    </li>
-  </ul>
+  <div id="credits" >
+    <ul class="list-group list-group-horizontal position-absolute top-50 start-50 translate-middle">
+      <li class="list-group-item">Karol Bułdak</li>
+      <li class="list-group-item">Dominik Furman</li>
+      <li class="list-group-item">Szymon Fit</li>
+    </ul>
+  </div>
+  </div>
 </div>
-
-<!-- <div style="margin-top: 50px;">
-    <div class="form-check form-switch">
-    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-    <label class="form-check-label" for="flexSwitchCheckDefault">Notifications</label>
-    </div>
-    <div class="form-check form-switch">
-    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-    <label class="form-check-label" for="flexSwitchCheckDefault">Cellular network streaming</label>
-    </div>
-    <div class="form-check form-switch">
-    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-    <label class="form-check-label" for="flexSwitchCheckDefault">Parent mode</label>
-    </div>
-</div> -->

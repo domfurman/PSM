@@ -3,48 +3,54 @@ import { MovieService } from '../../services/movie.service';
 import { collection } from 'firebase/firestore';
 import { Movie } from '../../models/movie';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit{
-
-  // movieList: Movie[] = new Array<Movie>
+export class HomeComponent implements OnInit {
+  loading: boolean = true;
   movies: any[] = [];
+  users: any[] = [];
 
-  constructor(private movieService: MovieService, private router: Router) {}
-  
+  constructor(
+    private movieService: MovieService,
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
   ngOnInit(): void {
-    this.loadMoviesData()
+    this.loadMoviesData();
+    // console.log(this.authService.isUserSignedIn());
+    // console.log(this.match())
+    // console.log(this.authService.check())
   }
 
-  // loadMovies() {
-  //   this.movieService.getData().subscribe((snapshot) => {
-  //     this.movieList = snapshot.map((changes) => {
-  //       return {
-  //         id: changes.payload.doc.id,
-  //         ...changes.payload.doc.data()
-  //       }
-  //     })
-  //   })
-  // }
   loadMoviesData(): void {
     this.movieService.getData().subscribe((data: any[]) => {
-      this.movies = data.map(item => {
+      this.movies = data.map((item) => {
+        this.loading = false;
         return {
           id: item.payload.doc.id,
-          ...item.payload.doc.data()
+          ...item.payload.doc.data(),
         };
       });
     });
   }
 
   redirectToSingleMovie(movieName: string) {
-    this.router.navigate(['single-movie/', movieName])
-    // this.movieService.getSingleMovie(movieName);
-    // console.log(movieName)
+    if (this.checkIfUserIsSignedIn()) {
+      console.log(this.checkIfUserIsSignedIn);
+      this.router.navigate(['single-movie/', movieName]);
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
-  
+
+  checkIfUserIsSignedIn() {
+    return this.authService.isUserSignedIn();
+  }
 }

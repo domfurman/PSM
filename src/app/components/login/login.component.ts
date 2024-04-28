@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Credentials } from '../../interfaces/credentials';
 import { SignUpCredentials } from '../../interfaces/sign-up-credentials';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -26,7 +28,7 @@ export class LoginComponent {
 
   showLoginForm = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
     this.authService.login(this.credentials.email, this.credentials.password);
@@ -47,6 +49,20 @@ export class LoginComponent {
     })
       .catch((error) => {
         console.error('Google login failed:', error);
+    });
+  }
+
+  signupAlert() {
+    Swal.fire({
+      title: 'Sign up successful',
+      text: "You can now log in.",
+      icon: 'success',
+      confirmButtonText: 'OK',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.signup()
+        this.changeForm()
+      }
     });
   }
   

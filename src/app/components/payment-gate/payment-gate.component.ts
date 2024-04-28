@@ -4,6 +4,7 @@ import { Movie } from '../../models/movie';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MoviePaymentDetails } from '../../models/movie-payment-details';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -14,10 +15,12 @@ import Swal from 'sweetalert2';
 export class PaymentGateComponent implements OnInit{
 
   moviePaymentDetails: any = new MoviePaymentDetails();
+  credentials: string = '';
 
-  constructor(private movieService: MovieService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private movieService: MovieService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {}
   ngOnInit(): void {
     this.getMovieParams();
+    this.getCurUser()
   }
 
   getMovieParams() {
@@ -32,6 +35,13 @@ export class PaymentGateComponent implements OnInit{
       // console.log(this.moviePaymentDetails)
   })
     
+  }
+
+  getCurUser() {
+    this.authService.matchUser().subscribe(credentials => {
+      this.credentials = credentials;
+      console.log(credentials);
+    });
   }
 
   pay() {

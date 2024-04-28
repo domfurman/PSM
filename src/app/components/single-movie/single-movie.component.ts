@@ -2,40 +2,44 @@ import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../../services/movie.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Movie } from '../../models/movie';
-import { getFirestore } from 'firebase/firestore';
 
 @Component({
   selector: 'app-single-movie',
   templateUrl: './single-movie.component.html',
-  styleUrl: './single-movie.component.scss'
+  styleUrl: './single-movie.component.scss',
 })
-export class SingleMovieComponent implements OnInit{
+export class SingleMovieComponent implements OnInit {
 
+  loading: boolean = true;
   movie: any = new Movie();
-  boughtFor24h: boolean = false
+  boughtFor24h: boolean = false;
 
-  constructor(private movieService: MovieService, private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private movieService: MovieService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.getMovie()
+    this.getMovie();
   }
 
-
   getMovie() {
-    this.route.params.subscribe(async params => {
+    this.route.params.subscribe(async (params) => {
       const movieName = params['movieName'];
       try {
         const movieData = await this.movieService.getSingleMovie(movieName);
-        this.movie = movieData
-        
+        this.movie = movieData;
+        this.loading = false;
       } catch (error) {
         console.error('Error getting movie:', error);
       }
-      
-    })
+    });
   }
 
   redirectToPaymentGate(identifier: string, m: string, p: number) {
-    this.router.navigate(['/payment-gate', m], {queryParams: {identifier: identifier, price: p, name: m}})
+    this.router.navigate(['/payment-gate', m], {
+      queryParams: { identifier: identifier, price: p, name: m },
+    });
   }
 }

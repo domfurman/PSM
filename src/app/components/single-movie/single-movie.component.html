@@ -1,28 +1,43 @@
-<!-- <h1>{{movie['movieName']}}</h1> -->
-<app-navbar></app-navbar>
-<app-back-button></app-back-button>
+<div class="container-fluid" style="margin-top: 49px; margin-bottom: 89px;">
+    <app-navbar></app-navbar>
+    <app-back-button></app-back-button>
 
-<div class="card" style="margin-top: 50px; margin-bottom: 50p">
-    <div>
-    <img
-        src="{{movie['linkToImage']}}"
-        class="card-img-top"
-        alt="..."
-    />
-    <div class="text-light card-body d-flex card-img-overlay position-absolute top-50 start-50 translate-middle-x" id="prices">
-        <!-- <p class="card-text p-2 text-black" style="font-size: 1.5rem;"><span style="--bs-bg-opacity: .5; :hover{  }" class="rounded mx-auto p-2 bg-secondary">{{movie['priceFor24h']}}</span></p>
-        <p class="card-text p-2 text-black" style="font-size: 1.5rem;"><span style="--bs-bg-opacity: .5;" class="rounded mx-auto p-2 bg-secondary">{{movie['price']}}</span></p> -->
-        <button (click)="redirectToPaymentGate('priceFor24h',movie['movieName'], movie['priceFor24h'])"><span class="rounded mx-auto p-2 bg-secondary">{{movie['priceFor24h']}}</span></button>
-        <button (click)="redirectToPaymentGate('price',movie['movieName'], movie['price'])"><span class="rounded mx-auto p-2 bg-secondary">{{movie['price']}}</span></button>
+    <div *ngIf="loading" class="overlay d-flex justify-content-center align-items-center">
+        <div class="spinner-border" role="status" style="width: 10rem; height: 10rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
-    </div>
-    
-    <div class="card-body d-flex">
-        <p class="card-text p-2" style="font-size: 1.5rem;">{{movie['movieName']}}</p>
-        
-    </div>
-    
-    <div class="card-body d-flex">
-        <p class="card-text p-2" style="font-size: 1.5rem;">{{movie['description']}}</p>
+
+
+    <div *ngIf="!loading" class="container-fluid d-flex justify-content-center align-items-center">
+        <div class="card col-sm-12 col-md-4" style="position: relative;">
+            <img src="{{movie['linkToImage']}}" class="card-img-top" alt="...">
+            
+            <div class="card-body d-flex justify-content-center">
+                <p class="card-text p-2" style="font-size: 1.5rem;">{{movie['movieName']}}</p>
+            </div>
+            <br>
+            <div class="mx-auto">
+                <span class="fs-5 text">
+                Cena za 24h: 
+                </span>
+                <button style="height: fit-content; border: none; background-color: transparent;" (click)="redirectToPaymentGate('priceFor24h',movie['movieName'], movie['priceFor24h'])">
+                    <span class="rounded mx-auto p-2 bg-success btn-lg">{{movie['priceFor24h'] + " $"}}</span>
+                </button>
+            </div>
+            <br>
+            <div class="mx-auto">
+                <span class="fs-5 text">
+                Cena na stałe: 
+                </span>
+                <button style="height: fit-content; border: none; background-color: transparent;" (click)="redirectToPaymentGate('price',movie['movieName'], movie['price'])">
+                    <span class="rounded mx-auto p-2 bg-success btn-lg">{{movie['price']  + " $"}}</span>
+                </button>
+            </div>
+            
+            <div class="card-body d-flex justify-content-center">
+                <p class="card-text p-2" style="font-size: 1.5rem;">{{movie['description']}}</p>
+            </div>
+        </div>
     </div>
 </div>
