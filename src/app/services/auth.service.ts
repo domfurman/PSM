@@ -22,6 +22,9 @@ export class AuthService {
       })
       .catch((error) => {
         console.log(error)
+        if('vibrate' in navigator){
+          navigator.vibrate(300);
+        }
       });
   }
 
@@ -34,36 +37,37 @@ export class AuthService {
           })
           .catch(error => {
             console.error("Error creating client:", error);
+            if ('vibrate' in navigator) {
+              navigator.vibrate(300);
+            }
           });
       })
       .catch(error => {
         console.error("Error during sign-up:", error);
+        if ('vibrate' in navigator) {
+          navigator.vibrate(300);
+        }
       });
   }
-
-  // signUp(email: string, password: string) {
-  //   this.afAuth.createUserWithEmailAndPassword(email, password)
-  //     .then(() => {
-  //       console.log(email, password)
-  //     })
-  //     .catch((error) => {
-  //       console.log(error)
-  //     });
-  // }
 
   logout() {
     this.afAuth.signOut()
       .then(() => {
         console.log('User logged out successfully')
+        if ('vibrate' in navigator) {
+          navigator.vibrate(300);
+        }
         this.router.navigate(['/login'])
       })
       .catch((error) => {
         console.log(error)
+        if ('vibrate' in navigator) {
+          navigator.vibrate(300);
+        }
       });
   }
 
   isUserSignedIn() {
-    // return this.afAuth.currentUser;
     const auth = getAuth();
     const user = auth.currentUser;
     
@@ -103,56 +107,49 @@ export class AuthService {
   }
 
   matchUser(): Observable<string> {
-  //   const auth = getAuth()
-  //   const curUser = auth.currentUser
-  //   var name = ''
-  //   var surname = ''
-  //   var credentials = ''
-  //   // const user = new User()
-  //   this.firestore.collection("clients").get().subscribe((querySnapshot) => {
-  //     querySnapshot.forEach((doc) => {
-  //       const data = doc.data() as { email: string, name: string, surname: string, age: number } | undefined;;
-  //       if (data && data.email == this.getCurrentUserEmail()) {
-  //         const email = data.email || 'N/A';
-  //         name = data.name || 'N/A';
-  //         surname = data.surname || 'N/A';
-  //         // const age = data.age || 'N/A';
-  //         credentials = name + " " + surname
+    return new Observable<string>(observer => {
 
-  //         // console.log("Email:", email);
-  //         // console.log("Name:", name);
-  //         // console.log("Surname:", surname);
-  //         // console.log("Age:", credentials);
-  //         return credentials
-  //       } else {
-  //         return ""
-  //       }
-  //     })
-  //   }
+      // checks if user is signed in
+      const auth = getAuth();
+      const curUser = auth.currentUser;
+      if (!curUser) {
+        observer.next("");
+        return;
+      }
       
-  //     )
-  //     return credentials
-  return new Observable<string>(observer => {
-    const auth = getAuth();
-    const curUser = auth.currentUser;
-    let name = '';
-    let surname = '';
-    let credentials = '';
-    this.firestore.collection("clients").get().subscribe((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const data = doc.data() as { email: string, name: string, surname: string, age: number } | undefined;
-        if (data && data.email == this.getCurrentUserEmail()) {
-          const email = data.email || 'N/A';
-          name = data.name || 'N/A';
-          surname = data.surname || 'N/A';
-          credentials = name + " " + surname;
-          observer.next(credentials);
-        } else {
+      // extracts user's email
+      const currentUserEmail = this.getCurrentUserEmail();
+      console.log(currentUserEmail)
+      if (!currentUserEmail) {
+        observer.next("");
+        return; 
+      }
+      
+      // matches signed inn user's email with email in 'clients' collection
+      this.firestore.collection("clients").ref
+        .where("email", "==", currentUserEmail)
+        .get()
+        .then(querySnapshot => {
+          // checks if document is not empty
+          if (querySnapshot.size === 0) {
+            observer.next("");
+          // it extracts name and surname from the matched collection
+          } else {
+            querySnapshot.forEach(doc => {
+              const data = doc.data() as { email: string, name: string, surname: string, age: number };
+              const name = data.name || 'N/A';
+              const surname = data.surname || 'N/A';
+              const credentials = name + " " + surname;
+              observer.next(credentials);
+            });
+          }
+        })
+        // error handling
+        .catch(error => {
+          console.error("Error getting user document:", error);
           observer.next("");
-        }
-      });
+        });
     });
-  });
   }
 }
 

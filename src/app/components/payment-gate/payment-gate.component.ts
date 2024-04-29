@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieService } from '../../services/movie.service';
-import { Movie } from '../../models/movie';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MoviePaymentDetails } from '../../models/movie-payment-details';
 import Swal from 'sweetalert2';
@@ -32,7 +31,6 @@ export class PaymentGateComponent implements OnInit{
       this.moviePaymentDetails['movieName'] = movie;
       this.moviePaymentDetails['chosenPrice'] = price;
       this.moviePaymentDetails['identifier'] = identifier;
-      // console.log(this.moviePaymentDetails)
   })
     
   }
@@ -40,7 +38,6 @@ export class PaymentGateComponent implements OnInit{
   getCurUser() {
     this.authService.matchUser().subscribe(credentials => {
       this.credentials = credentials;
-      console.log(credentials);
     });
   }
 
@@ -52,6 +49,8 @@ export class PaymentGateComponent implements OnInit{
       confirmButtonText: 'OK',
     }).then((result) => {
       if (result.isConfirmed) {
+        const email = this.getCurrentUserEmail()
+        this.movieService.addMovieToLibrary(email, this.moviePaymentDetails['movieName'])
           this.redirectToLibrary()
       }
     });
@@ -59,5 +58,14 @@ export class PaymentGateComponent implements OnInit{
 
   redirectToLibrary() {
     this.router.navigate(['/library']);
+  }
+
+  getCurrentUserEmail() {
+    const email = this.authService.getCurrentUserEmail();
+    if (typeof email === 'string') {
+      return email.toString();
+    } else {
+      return "";
+    }
   }
 }

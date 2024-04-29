@@ -15,11 +15,13 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { FirestoreModule } from '@angular/fire/firestore';
 import { SingleMovieComponent } from './components/single-movie/single-movie.component';
-import { SearchComponent } from './components/search/search.component';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { LibraryComponent } from './components/library/library.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { PaymentGateComponent } from './components/payment-gate/payment-gate.component';
+import { MapComponent } from './components/map/map.component';
+
+
 
 @NgModule({
   declarations: [
@@ -28,11 +30,12 @@ import { PaymentGateComponent } from './components/payment-gate/payment-gate.com
     HomeComponent,
     NavbarComponent,
     SingleMovieComponent,
-    SearchComponent,
+  
     BackButtonComponent,
     LibraryComponent,
     SettingsComponent,
     PaymentGateComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,8 +45,7 @@ import { PaymentGateComponent } from './components/payment-gate/payment-gate.com
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    AngularFirestoreModule
-    
+    AngularFirestoreModule,
   ],
   providers: [FirestoreModule, AuthService],
   bootstrap: [AppComponent],

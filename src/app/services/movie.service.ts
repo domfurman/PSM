@@ -1,21 +1,24 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { take } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, switchMap, take } from 'rxjs/operators';
+import { AuthService } from './auth.service';
+import { getAuth } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MovieService {
   loading: boolean = true;
-  constructor(private fbs: AngularFirestore) {}
+  constructor(private firestore: AngularFirestore, private authService: AuthService) {}
 
   getData() {
-    return this.fbs.collection('movies').snapshotChanges();
+    return this.firestore.collection('movies').snapshotChanges();
   }
 
   async getSingleMovie(movieName: string) {
     try {
-      const docRef = this.fbs.collection('movies').doc(movieName);
+      const docRef = this.firestore.collection('movies').doc(movieName);
       const docSnapshot = await docRef.get().pipe(take(1)).toPromise();
 
       if (!docSnapshot || !docSnapshot.exists) {
@@ -30,5 +33,97 @@ export class MovieService {
       return null;
     }
   }
-}
+
+  addMovieToLibrary(userEmail: string, movieName: string) {
+    try {
+      const docRef = this.firestore.collection('library').doc(userEmail).set({
+        movieName: movieName
+      });
+      console.log('Document created with ID: ', userEmail)
+    } catch (error) {
+      console.error("Error creating document:", error);
+    }
+  }
+
+  matchMoviesWithUser(): Observable<string[]> {
+    return new Observable<string[]>(observer => {
+
+      // checks if user is signed in
+      // const auth = getAuth();
+      // const curUser = auth.currentUser;
+      // if (!curUser) {
+      //   console.log('1')
+      //   observer.next([]);
+      //   observer.complete(); // Complete the observer
+      //   return;
+      // }
+      
+      // extracts user's email
+      const currentUserEmail = this.authService.getCurrentUserEmail();
+      console.log(currentUserEmail)
+      if (!currentUserEmail) {
+        console.log('2')
+        observer.next([]);
+        observer.complete(); // Complete the observer
+        return; 
+      }
+
+      this.firestore.collection("library").doc(currentUserEmail)
+        .get().pipe(
+          switchMap(querySnapshot => {
+            if (!querySnapshot.exists) {
+              // If the document doesn't exist, return an empty array
+              return of([]);
+            } else {
+              const data = querySnapshot.data() as { movieName?: string[] };
+              if (data && Array.isArray(data.movieName)) {
+                // If movieName field is an array, return it
+                return of(data.movieName);
+              } else {
+                // If movieName field is not an array or doesn't exist, return an empty array
+                return of([]);
+              }
+            }
+          }),
+          catchError(error => {
+            console.error("Error getting user document:", error);
+            // Handle error by returning an empty array
+            return of([]);
+          })
+        )
+        .subscribe({
+          next: movies => {
+            observer.next(movies);
+            observer.complete(); // Complete the observer
+          },
+          error: err => {
+            console.error("Error getting movies:", err);
+            observer.error(err);
+          }
+        });
+    });
+  }
+      
+      
+      // this.firestore.collection("library").doc(currentUserEmail)
+      //   .get().toPromise()
+      //   .then(querySnapshot => {
+      //     if (!querySnapshot?.exists) {
+      //       observer.next("");
+          
+      //     } else {
+      //       const data = querySnapshot.data() as {movieName: string}
+      //       const movie = data.movieName
+      //       console.log(movie)
+      //       observer.next(movie)
+      //     }
+      //   })
+      //   // error handling
+      //   .catch(error => {
+      //     console.error("Error getting user document:", error);
+      //     observer.next("");
+      //   });
+    // });
+  }
+
 

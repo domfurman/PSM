@@ -16,6 +16,8 @@ export class HomeComponent implements OnInit {
   movies: any[] = [];
   users: any[] = [];
 
+  activeUser = '';
+
   constructor(
     private movieService: MovieService,
     private router: Router,
@@ -24,9 +26,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMoviesData();
-    // console.log(this.authService.isUserSignedIn());
-    // console.log(this.match())
-    // console.log(this.authService.check())
   }
 
   loadMoviesData(): void {
@@ -53,4 +52,15 @@ export class HomeComponent implements OnInit {
   checkIfUserIsSignedIn() {
     return this.authService.isUserSignedIn();
   }
+
+  // getCurUser() {
+  //   this.authService.matchUser().subscribe(credentials => {
+  //     this.activeUser = credentials;
+  //     console.log(credentials);
+  //   });
+  // }
+
+  // getActiveUser() {
+  //   return this.activeUser;
+  // }
 }
