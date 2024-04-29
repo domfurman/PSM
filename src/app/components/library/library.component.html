@@ -1,21 +1,37 @@
 <app-back-button></app-back-button>
 <app-navbar></app-navbar>
 
-<h2 style="margin-top: 48px;">Hello {{credentials}}</h2>
+<br>
+<div style="margin-left:auto; margin-right:auto; width:97%; margin-top: 48px;">
+<h2 *ngIf="credentials == ''">Hello
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</h2>
+<h2 *ngIf="credentials != ''">Hello <span style="font-weight: bold;">{{credentials +"!"}}</span></h2>
+<h2 *ngElse></h2>
 <h3>This is your movie collection:</h3>
 <div *ngIf="movies.length === 0; else moviesList">
-    <p>No movies found.</p>
+  <br>
+    <div class="overlay d-flex justify-content-center align-items-center">
+        <div class="spinner-border" role="status" style="width: 10rem; height: 10rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+</div>
   </div>
   
   <ng-template #moviesList>
-    <!-- <ul>
-      <li *ngFor="let movie of movies">
-        {{ movie }}
-      </li>
-    </ul> -->
     <div *ngFor="let movie of movies">
-        <div class="card">
-            <p class="card-text p-3 col-6" style="font-size: 1.25rem;">{{movie}}</p>
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ movie }}</h5>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
   </ng-template>
+</div>
+

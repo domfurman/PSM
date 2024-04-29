@@ -63,12 +63,6 @@ export class MapComponent implements OnInit {
         .on('click', function (e) {
           window.location.href = 'https://www.kinoparadox.pl/';
         });
-    }
-      
-      
-    
-    );
+    });
   }
-
-  
 }

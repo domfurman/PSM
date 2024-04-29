@@ -1,30 +1,49 @@
 <app-navbar></app-navbar>
 
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-  />
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+/>
+<div
+  *ngIf="loading"
+  class="overlay d-flex justify-content-center align-items-center"
+  style="margin-top: 10px"
+>
+  <div
+    class="spinner-border"
+    role="status"
+    style="width: 10rem; height: 10rem; margin-top: 50px"
+  >
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<div
+  style="margin-bottom: 89px; margin-top: 10px"
+  *ngIf="!loading"
+  class="container-fluid d-flex justify-content-center align-items-center"
+>
+  <app-navbar></app-navbar>
+  <div class="home">
+    <div *ngFor="let movie of movies" class="col-sm-12 col-md-10">
+      <div class="card">
+        <img src="{{ movie['linkToImage'] }}" class="card-img-top" alt="..." />
+        <div class="card-body d-flex justify-content-center align-items-center">
+          <div class="row">
+            <div class="col-12 d-flex flex-column align-items-center">
+              <p class="card-text" style="font-size: 1.5rem">
+                <span class="align-middle">{{ movie["movieName"] }}</span>
+              </p>
 
-  <div *ngIf="loading" class="overlay d-flex justify-content-center align-items-center">
-        <div class="spinner-border" role="status" style="width: 10rem; height: 10rem; margin-top: 50px;">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
-
-<div *ngIf="!loading" class="container-fluid d-flex justify-content-center align-items-center">
-        <app-navbar></app-navbar>
-        <div class="home">
-            <div *ngFor="let movie of movies" style="margin-bottom: 50px;" class="col-sm-12 col-md-10">
-                <div class="card">
-                    <img src="{{movie['linkToImage']}}" class="card-img-top" alt="...">
-                    <div class="card-body d-flex">
-                        <div class="row justify-content-evenly">
-                            <p class="card-text p-2 col-4" style="font-size: 1.5rem;">{{movie['movieName']}}</p>
-                            <div class="col-4"></div>
-                            <button (click)="redirectToSingleMovie(movie['movieName'])" class="bg-success d-flex justify-content-center col-4"><i class="bi bi-cart ms-auto p-2" style="font-size: 1.5rem;"> buy</i></button>
-                        </div>
-                    </div>  
-                </div>
+              <button
+                (click)="redirectToSingleMovie(movie['movieName'])"
+                class="bg-success mt-3"
+              >
+                <i class="bi bi-cart p-2" style="font-size: 1.5rem"> buy</i>
+              </button>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+</div>

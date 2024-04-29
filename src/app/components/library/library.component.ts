@@ -16,6 +16,7 @@ export class LibraryComponent implements OnInit{
   mail: string = '';
   credentials: string = '';
   userSubscription!: Subscription;
+  loading: boolean = false;
 
   constructor(private authService: AuthService, private movieService: MovieService) {
   }
@@ -25,7 +26,7 @@ export class LibraryComponent implements OnInit{
     // console.log(this.authService.isUserSignedIn())
     await this.userAuthCheck()
     this.getmovies();
-    this.matchUser()
+    this.matchUser();
   }
 
   async userAuthCheck(): Promise<void> {
@@ -45,6 +46,7 @@ export class LibraryComponent implements OnInit{
     this.movieService.matchMoviesWithUser(this.mail).subscribe({
       next: movies => {
         this.movies = movies;
+        this.loading = false;
         console.log('Movies:', this.movies);
       },
       error: err => {
