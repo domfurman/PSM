@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { catchError, switchMap, take } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { getAuth } from 'firebase/auth';
@@ -34,21 +34,41 @@ export class MovieService {
     }
   }
 
-  addMovieToLibrary(userEmail: string, movieName: string) {
-    try {
-      const docRef = this.firestore.collection('library').doc(userEmail).set({
-        movieName: movieName
-      });
-      console.log('Document created with ID: ', userEmail)
-    } catch (error) {
-      console.error("Error creating document:", error);
-    }
+  // addMovieToLibrary(userEmail: string, movieName: string) {
+  //   // try {
+  //   //   const docRef = this.firestore.collection('library').doc(userEmail).set({
+  //   //     movieName: movieName
+  //   //   });
+  //   //   console.log('Document created with ID: ', userEmail)
+  //   // } catch (error) {
+  //   //   console.error("Error creating document:", error);
+  //   // }
+    
+  // }
+
+  addMovieToLibrary(userEmail: string, movieName: string): Observable<void> {
+    const docRef = this.firestore.collection('library').doc(userEmail);
+
+    return from(docRef.get().toPromise().then(docSnapshot => {
+      if (docSnapshot && docSnapshot.exists) {
+        const movieNames = docSnapshot.get('movieNames') || [];
+        movieNames.push(movieName);
+        return docRef.update({ movieNames });
+      } else {
+        return docRef.set({ movieNames: [movieName] });
+      }
+    })).pipe(
+      catchError(error => {
+        console.error('Error adding movie to library:', error);
+        throw error;
+      })
+    );
   }
 
-  matchMoviesWithUser(): Observable<string[]> {
+  matchMoviesWithUser(email: string): Observable<string[]> {
     return new Observable<string[]>(observer => {
 
-      // checks if user is signed in
+      // // checks if user is signed in
       // const auth = getAuth();
       // const curUser = auth.currentUser;
       // if (!curUser) {
@@ -58,29 +78,27 @@ export class MovieService {
       //   return;
       // }
       
-      // extracts user's email
-      const currentUserEmail = this.authService.getCurrentUserEmail();
-      console.log(currentUserEmail)
-      if (!currentUserEmail) {
-        console.log('2')
-        observer.next([]);
-        observer.complete(); // Complete the observer
-        return; 
-      }
+      // // extracts user's email
+      // const currentUserEmail = this.authService.getCurrentUserEmail();
+      // if (!currentUserEmail) {
+      //   observer.next([]);
+      //   observer.complete(); // Complete the observer
+      //   return; 
+      // }
 
-      this.firestore.collection("library").doc(currentUserEmail)
+      this.firestore.collection("library").doc(email)
         .get().pipe(
           switchMap(querySnapshot => {
             if (!querySnapshot.exists) {
               // If the document doesn't exist, return an empty array
               return of([]);
             } else {
-              const data = querySnapshot.data() as { movieName?: string[] };
-              if (data && Array.isArray(data.movieName)) {
-                // If movieName field is an array, return it
-                return of(data.movieName);
+              const data = querySnapshot.data() as { movieNames?: string[] };
+              if (data && Array.isArray(data.movieNames)) {
+                // If movieNames field is an array, return it
+                return of(data.movieNames);
               } else {
-                // If movieName field is not an array or doesn't exist, return an empty array
+                // If movieNames field is not an array or doesn't exist, return an empty array
                 return of([]);
               }
             }

@@ -38,6 +38,7 @@ export class PaymentGateComponent implements OnInit{
   getCurUser() {
     this.authService.matchUser().subscribe(credentials => {
       this.credentials = credentials;
+      console.log(this.credentials)
     });
   }
 

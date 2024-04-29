@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -11,18 +12,40 @@ import Swal from 'sweetalert2';
 export class SettingsComponent implements OnInit {
   credentials: string = '';
   email: string = '';
+  userSubscription!: Subscription;
+  mail: string = '';
 
   constructor(private authService: AuthService, private router: Router) {}
-  ngOnInit(): void {
-    this.getCurUser();
-    this.getCurrentUserEmail();
+  async ngOnInit(): Promise<void> {
+    await this.userAuthCheck()
+    this.matchUser()
+    this.getCurrentUserEmail()
   }
 
-  getCurUser() {
-    this.authService.matchUser().subscribe((credentials) => {
-      console.log(credentials)
+  async userAuthCheck(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.userSubscription = this.authService.user$.subscribe((user: { email: string; }) => {
+        if (user) {
+          this.mail = user.email;
+        } else {
+          this.mail = '';
+        }
+        resolve(); // Resolve the Promise when userAuthCheck is completed
+      });
     });
   }
+
+  matchUser() {
+    this.authService.matchUserWithEmail(this.mail).subscribe(credentials => {
+      this.credentials = credentials;
+  })
+  }
+
+  // getCurUser() {
+  //   this.authService.matchUser().subscribe((credentials) => {
+  //     console.log(credentials)
+  //   });
+  // }
 
   getCurrentUserEmail() {
     const email = this.authService.getCurrentUserEmail();

@@ -6,27 +6,48 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/firestore';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { User } from '../models/user';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(public firestore: AngularFirestore, private afAuth: AngularFireAuth, private router: Router) { }
+  user$: any;
 
-  login(email: string, password: string) {
-    this.afAuth.signInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.router.navigate(['/home'])
-      })
-      .catch((error) => {
-        console.log(error)
-        if('vibrate' in navigator){
-          navigator.vibrate(300);
+  constructor(public firestore: AngularFirestore, private afAuth: AngularFireAuth, private router: Router) {
+    this.user$ = this.afAuth.authState.pipe(
+      tap(user => {
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          localStorage.removeItem('user');
         }
-      });
+      })
+    );
   }
+
+  async login(email: string, password: string) {
+    try {
+      await this.afAuth.signInWithEmailAndPassword(email, password);
+      this.router.navigate(['/home'])
+    } catch (error) {
+      console.error('Error signing in:', error);
+    }
+  }
+
+  // login(email: string, password: string) {
+  //   this.afAuth.signInWithEmailAndPassword(email, password)
+  //     .then(() => {
+  //       this.router.navigate(['/home'])
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //       if('vibrate' in navigator){
+  //         navigator.vibrate(300);
+  //       }
+  //     });
+  // }
 
   signUp(email: string, password: string, name: string, surname: string, age: number) {
     this.afAuth.createUserWithEmailAndPassword(email, password)
@@ -119,15 +140,44 @@ export class AuthService {
       
       // extracts user's email
       const currentUserEmail = this.getCurrentUserEmail();
-      console.log(currentUserEmail)
       if (!currentUserEmail) {
         observer.next("");
         return; 
       }
-      
+
       // matches signed inn user's email with email in 'clients' collection
       this.firestore.collection("clients").ref
         .where("email", "==", currentUserEmail)
+        .get()
+        .then(querySnapshot => {
+          // checks if document is not empty
+          if (querySnapshot.size === 0) {
+            observer.next("");
+          // it extracts name and surname from the matched collection
+          } else {
+            querySnapshot.forEach(doc => {
+              const data = doc.data() as { email: string, name: string, surname: string, age: number };
+              const name = data.name || 'N/A';
+              const surname = data.surname || 'N/A';
+              const credentials = name + " " + surname;
+              observer.next(credentials);
+            });
+          }
+        })
+        // error handling
+        .catch(error => {
+          console.error("Error getting user document:", error);
+          observer.next("");
+        });
+    });
+  }
+
+  matchUserWithEmail(email: string) {
+    return new Observable<string>(observer => {
+
+      // matches signed inn user's email with email in 'clients' collection
+      this.firestore.collection("clients").ref
+        .where("email", "==", email)
         .get()
         .then(querySnapshot => {
           // checks if document is not empty
