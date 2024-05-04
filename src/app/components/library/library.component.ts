@@ -22,9 +22,7 @@ export class LibraryComponent implements OnInit{
   }
 
   async ngOnInit(): Promise<void> {
-    // this.getCurUser();
-    // console.log(this.authService.isUserSignedIn())
-    await this.userAuthCheck()
+    await this.userAuthCheck();
     this.getmovies();
     this.matchUser();
   }

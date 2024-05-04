@@ -102,6 +102,7 @@ export class AuthService {
       const auth = getAuth();
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
       console.log('signInWithGoogle: success', result);
+      this.router.navigate(['/home'])
     } catch (error) {
       console.error('signInWithGoogle: failure', error);
     }

@@ -3,13 +3,15 @@
 
 <br>
 <div style="margin-left:auto; margin-right:auto; width:97%; margin-top: 48px;">
-<h2 *ngIf="credentials == ''">Hello
-  <div class="spinner-border" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-</h2>
-<h2 *ngIf="credentials != ''">Hello <span style="font-weight: bold;">{{credentials +"!"}}</span></h2>
-<h2 *ngElse></h2>
+  <h2 *ngIf="credentials == ''">
+    Hello
+  </h2>
+  <h2 *ngIf="credentials != ''">
+    Hello <span style="font-weight: bold;">{{credentials +"!"}}</span>
+  </h2>
+  <h2 *ngIf="credentials == null || credentials == undefined">
+    Hello
+  </h2>
 <h3>This is your movie collection:</h3>
 <div *ngIf="movies.length === 0; else moviesList">
   <br>

@@ -30,7 +30,6 @@ import { MapComponent } from './components/map/map.component';
     HomeComponent,
     NavbarComponent,
     SingleMovieComponent,
-  
     BackButtonComponent,
     LibraryComponent,
     SettingsComponent,

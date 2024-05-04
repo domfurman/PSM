@@ -2,17 +2,15 @@
 <app-back-button></app-back-button>
 
 <div style="margin-top: 48px; margin-bottom: 89px; margin-left:auto; margin-right:auto; width:90%"> 
-  <br>
-<h1>Jesteś zalogowany jako użytkownik: </h1>
-<div *ngIf="credentials == ''" class="spinner-border" role="status">
-  <span class="visually-hidden">Loading...</span>
-</div>
-<p *ngIf="credentials != ''">{{ credentials }}</p>
+<br>
+<h1>Jesteś zalogowany jako użytkownik: </h1>
+<p *ngIf="credentials !== '' && credentials">{{ credentials }}</p>
+<p *ngIf="gmailuser">Zalogowany przez Google!</p>
 <h1>Twój e-mail: </h1>
-<div *ngIf="email == ''" class="spinner-border" role="status">
+<div *ngIf="email === ''" class="spinner-border" role="status">
   <span class="visually-hidden">Loading...</span>
 </div>
-<p *ngIf="email != ''">{{ email }}</p>
+<p *ngIf="email !== ''">{{ email }}</p>
 
 <div class="d-flex justify-content-center align-items-center">
   <div class="col-sm-12 col-md-6" style="margin-top: 48px; margin-bottom: 89px">

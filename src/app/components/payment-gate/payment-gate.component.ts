@@ -52,7 +52,8 @@ export class PaymentGateComponent implements OnInit{
       if (result.isConfirmed) {
         const email = this.getCurrentUserEmail()
         this.movieService.addMovieToLibrary(email, this.moviePaymentDetails['movieName'])
-          this.redirectToLibrary()
+        this.redirectToLibrary()
+        
       }
     });
   }

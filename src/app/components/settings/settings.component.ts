@@ -14,6 +14,7 @@ export class SettingsComponent implements OnInit {
   email: string = '';
   userSubscription!: Subscription;
   mail: string = '';
+  gmailuser: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
   async ngOnInit(): Promise<void> {
@@ -37,15 +38,14 @@ export class SettingsComponent implements OnInit {
 
   matchUser() {
     this.authService.matchUserWithEmail(this.mail).subscribe(credentials => {
-      this.credentials = credentials;
+      if (credentials) {
+        this.credentials = credentials;
+      } else {
+        this.gmailuser = true;
+      }
+      
   })
   }
-
-  // getCurUser() {
-  //   this.authService.matchUser().subscribe((credentials) => {
-  //     console.log(credentials)
-  //   });
-  // }
 
   getCurrentUserEmail() {
     const email = this.authService.getCurrentUserEmail();
@@ -77,30 +77,4 @@ export class SettingsComponent implements OnInit {
   redirectToLogin() {
     this.router.navigate(['/login']);
   }
-
-  //   toggleVibration(event: Event) {
-  //     if (event.target instanceof HTMLInputElement) {
-  //       const checkbox = event.target as HTMLInputElement;
-  //       this.vibrationEnabled = checkbox.checked;
-  //       if (this.vibrationEnabled) {
-  //         window.navigator.vibrate(200);
-  //       } else {
-  //         window.navigator.vibrate(0);
-  //       }
-  //     }
-  //  }
-
-  //  Vibration() {
-  //     if (this.vibrationEnabled) {
-  //       window.navigator.vibrate(200);
-  //     }
-  //  }
-
-  // toggleVibration(enable:boolean) {
-  //   if (enable){
-  //     window.navigator.vibrate(200);
-  //   } else {
-  //     window.navigator.vibrate(0);
-  //   }
-  // }
 }

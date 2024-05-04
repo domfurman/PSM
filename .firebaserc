@@ -1,14 +1,5 @@
 {
-  "targets": {
-    "vod-app-auth": {
-      "hosting": {
-        "vod-app": [
-          "vod-app-auth"
-        ]
-      }
-    }
-  },
   "projects": {
-    "default": "vod-app-auth"
+    "default": "vod-app-70e29"
   }
 }
