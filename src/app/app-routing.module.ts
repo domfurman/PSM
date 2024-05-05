@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'payment-gate/:movieName', component: PaymentGateComponent},
   { path: 'login', component: LoginComponent},
   { path: '', redirectTo: '/login', pathMatch: 'full'},
-  { path: 'library', component: LibraryComponent}
+  { path: 'library', component: LibraryComponent },
 ];
 
 @NgModule({

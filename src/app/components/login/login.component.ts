@@ -53,6 +53,19 @@ export class LoginComponent {
   }
 
   signupAlert() {
+    if (!this.signUpCredentials.email || !this.signUpCredentials.password || !this.signUpCredentials.name || !this.signUpCredentials.surname || !this.signUpCredentials.age) {
+      Swal.fire({
+        title: 'Error',
+        text: "Please fill in all fields.",
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+      if ('vibrate' in navigator) {
+        navigator.vibrate(300);
+      }
+      return;
+    }
+
     Swal.fire({
       title: 'Sign up successful',
       text: "You can now log in.",
@@ -60,11 +73,10 @@ export class LoginComponent {
       confirmButtonText: 'OK',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.signup()
-        this.changeForm()
+        this.signup();
+        this.changeForm();
       }
     });
   }
-  
   
 }
