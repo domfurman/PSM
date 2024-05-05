@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist",
+    "public": "dist/vod-app/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
